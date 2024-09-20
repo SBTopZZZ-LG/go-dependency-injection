@@ -1,0 +1,19 @@
+logger:
+  level: "info"
+  development: true
+  encoding: "json"
+  output_paths:
+    - "./logs/all-logs.log"
+  error_output_paths:
+    - "./logs/errors.log"
+  encoder_config:
+    line_ending: "\n"
+
+database:
+  driver: "mysql"
+  user: "root"
+  password: "root"
+  host: "localhost"
+  port: 3306
+  name: "todo_app"
+  params: "parseTime=true"
