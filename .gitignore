@@ -1,5 +1,2 @@
 # Ignore logs
 logs
-
-# Wire boilerplate
-wire_gen.go
