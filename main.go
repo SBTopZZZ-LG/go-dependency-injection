@@ -1,8 +1,8 @@
 package main
 
 import (
-	"database/sql"
-	"github.com/a631807682/zerofield"
+	"go.uber.org/fx"
+	"gorm.io/gorm"
 	"todo_app/cli"
 	"todo_app/cli/create_todo_command"
 	"todo_app/cli/delete_todo_command"
@@ -13,6 +13,9 @@ import (
 	"todo_app/cli/update_todo_command"
 	"todo_app/config"
 	"todo_app/entities"
+	"todo_app/logger/console_logger"
+	"todo_app/logger/loggers"
+	"todo_app/logger/zap_logger"
 	"todo_app/repositories/to_do_repository"
 	"todo_app/services/to_do_service"
 	"todo_app/utils/gorm_util"
@@ -21,74 +24,65 @@ import (
 )
 
 func main() {
-	//TIP <h5>Load Configuration from the `config.yaml` file</h5>
-	conf, err := config.Load(config.DefaultConfigFileName)
-	if err != nil {
-		panic(err)
-	}
+	fx.New(
+		//TIP Disable Fx Logging
+		fx.NopLogger,
 
-	//TIP <h5>Create a MySQL database connection using the loaded configuration</h5>
-	sqlDB, err := sql_util.CreateConnection(conf.DBConfig)
-	if err != nil {
-		panic(err)
-	}
-	//TIP Make sure to close the database connection when `main` function exits
-	defer func(db *sql.DB) {
-		err := sql_util.CloseConnection(db)
-		if err != nil {
-			panic(err)
-		}
-	}(sqlDB)
+		//TIP <h5>App Config</h5>
+		config.Module,
 
-	//TIP <h5>Create a GORM instance with the MySQL database connection</h5>
-	gormDB, err := gorm_util.NewSilentGormInstanceWithMySQLDriver(sqlDB)
-	if err != nil {
-		panic(err)
-	}
-	err = gormDB.Use(zerofield.NewPlugin())
-	if err != nil {
-		panic(err)
-	}
+		//TIP <h5>Logging</h5>
+		//TIP Zap Logger
+		zap_util.Module,
+		zap_logger.Module,
+		//TIP Console Logger
+		fx.Supply(&console_logger.ConsoleLoggerParams{
+			MethodNamespaceSkip: 2,
+		}),
+		console_logger.Module,
+		//TIP Composite Logger
+		loggers.Module,
 
-	//TIP <h5>Run GORM Migration</h5>
-	// This will create/update the To-do table automatically
-	err = gormDB.AutoMigrate(&entities.TODO{})
-	if err != nil {
-		panic(err)
-	}
+		//TIP <h5>DB & ORM</h5>
+		sql_util.Module,
+		gorm_util.Module,
 
-	//TIP <h5>Create the To-do's corresponding repository and service</h5>
-	todoRepository := to_do_repository.New(gormDB)
-	todoService := to_do_service.New(todoRepository)
+		//TIP <h5>App Services</h5>
+		to_do_repository.Module,
+		to_do_service.Module,
 
-	//TIP <h5>Create the Zap Logger for logging</h5>
-	zap, err := zap_util.NewZapLogger(conf.LoggerConfig)
-	if err != nil {
-		panic(err)
-	}
+		//TIP <h5>CLI Commands</h5>
+		create_todo_command.Module,
+		delete_todo_command.Module,
+		get_todo_command.Module,
+		list_todos_command.Module,
+		make_todo_important_command.Module,
+		make_todo_not_important_command.Module,
+		update_todo_command.Module,
+		cli.Module,
 
-	//TIP <h5>Create the CLI commands that can be executed</h5>
-	createToDoCmd := create_todo_command.New(todoService, zap)
-	deleteToDoCmd := delete_todo_command.New(todoService, zap)
-	getToDoCmd := get_todo_command.New(todoService, zap)
-	listToDoCmd := list_todos_command.New(todoService, zap)
-	updatedToDoCmd := update_todo_command.New(todoService, zap)
-	makeToDoImportantCmd := make_todo_important_command.New(todoService, zap)
-	makeToDoNotImportantCmd := make_todo_not_important_command.New(todoService, zap)
-	cliCommands := []cli.ICommand{
-		createToDoCmd,
-		deleteToDoCmd,
-		getToDoCmd,
-		listToDoCmd,
-		updatedToDoCmd,
-		makeToDoImportantCmd,
-		makeToDoNotImportantCmd,
-	}
-	rootCmd := cli.NewRootCommand(cliCommands)
+		//TIP <h5>Main</h5>
+		fx.Invoke(
+			func(gormDB *gorm.DB, rootCmd *cli.RootCommand, shutdown fx.Shutdowner) {
+				//TIP <h5>Run GORM Migration</h5>
+				// This will create/update the To-do table automatically
+				err := gormDB.AutoMigrate(&entities.TODO{})
+				if err != nil {
+					panic(err)
+				}
 
-	//TIP <h4>Execute the CLI</h4>
-	err = rootCmd.Execute()
-	if err != nil {
-		panic(err)
-	}
+				//TIP <h4>Execute the CLI</h4>
+				err = rootCmd.Execute()
+				if err != nil {
+					panic(err)
+				}
+
+				//TIP <h5>Gracefully exit the Fx server</h5>
+				err = shutdown.Shutdown()
+				if err != nil {
+					panic(err)
+				}
+			},
+		),
+	).Run()
 }

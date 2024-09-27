@@ -14,12 +14,12 @@ type ITODOService interface {
 }
 
 type TODOService struct {
-	todoRepository *to_do_repository.TODORepository
+	todoRepository to_do_repository.ITODORepository
 
 	ITODOService
 }
 
-func New(todoRepository *to_do_repository.TODORepository) *TODOService {
+func New(todoRepository to_do_repository.ITODORepository) *TODOService {
 	return &TODOService{
 		todoRepository: todoRepository,
 	}
