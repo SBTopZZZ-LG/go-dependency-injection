@@ -8,26 +8,26 @@ type ICommand interface {
 	Init(rootCmd *cobra.Command)
 }
 
-type Command struct {
+type RootCommand struct {
 	commands []ICommand
 
 	rootCmd *cobra.Command
 }
 
-func NewRootCommand(commands []ICommand) *Command {
+func NewRootCommand(commands []ICommand) *RootCommand {
 	rootCmd := &cobra.Command{
 		Use:   "root",
 		Short: "root - a simple To-do management application",
 		Run:   func(cmd *cobra.Command, args []string) {},
 	}
 
-	return &Command{
+	return &RootCommand{
 		commands: commands,
 		rootCmd:  rootCmd,
 	}
 }
 
-func (c *Command) Execute() error {
+func (c *RootCommand) Execute() error {
 	for _, cmd := range c.commands {
 		cmd.Init(c.rootCmd)
 	}
