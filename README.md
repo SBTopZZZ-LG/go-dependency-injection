@@ -28,7 +28,7 @@ This project is a simple To-do application built with Go. While it covers basic 
 
 This repository has four branches, each highlighting different approaches to dependency management:
 
-- **`without_dep_inv`** (default): The starting point without dependency inversion or injection.
+- **`without_dep_inv`** (default): The starting point with basic dependency injection, without dependency inversion.
 - **`with_dep_inv`**: Introduces Dependency Inversion to address the initial shortcomings.
 - **`using_fx`**: Implements Dependency Injection using the Uber fx library.
 - **`using_wire`**: Utilizes Google wire for Dependency Injection.
