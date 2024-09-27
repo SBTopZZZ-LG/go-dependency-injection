@@ -6,17 +6,18 @@ import (
 	"go.uber.org/zap"
 	"strconv"
 	"todo_app/cli"
+	"todo_app/logger"
 	"todo_app/services/to_do_service"
 )
 
 type GetTODOCommand struct {
-	todoService *to_do_service.TODOService
-	logger      *zap.Logger
+	todoService to_do_service.ITODOService
+	logger      logger.ILogger
 
 	cli.ICommand
 }
 
-func New(todoService *to_do_service.TODOService, logger *zap.Logger) *GetTODOCommand {
+func New(todoService to_do_service.ITODOService, logger logger.ILogger) *GetTODOCommand {
 	return &GetTODOCommand{
 		todoService: todoService,
 		logger:      logger,

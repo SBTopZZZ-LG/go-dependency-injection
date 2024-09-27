@@ -13,6 +13,8 @@ import (
 	"todo_app/cli/update_todo_command"
 	"todo_app/config"
 	"todo_app/entities"
+	"todo_app/logger/loggers"
+	"todo_app/logger/zap_logger"
 	"todo_app/repositories/to_do_repository"
 	"todo_app/services/to_do_service"
 	"todo_app/utils/gorm_util"
@@ -61,20 +63,27 @@ func main() {
 	todoRepository := to_do_repository.New(gormDB)
 	todoService := to_do_service.New(todoRepository)
 
-	//TIP <h5>Create the Zap Logger for logging</h5>
+	//TIP <h5>Create the Loggers for logging</h5>
+	// Create a composite logger that can log into multiple `ILogger` implementations
 	zap, err := zap_util.NewZapLogger(conf.LoggerConfig)
 	if err != nil {
 		panic(err)
 	}
+	zapLogger := zap_logger.New(zap)
+	//consoleLogger := console_logger.New(2)
+	compositeLoggers := loggers.New(
+		zapLogger,
+		//consoleLogger,
+	)
 
 	//TIP <h5>Create the CLI commands that can be executed</h5>
-	createToDoCmd := create_todo_command.New(todoService, zap)
-	deleteToDoCmd := delete_todo_command.New(todoService, zap)
-	getToDoCmd := get_todo_command.New(todoService, zap)
-	listToDoCmd := list_todos_command.New(todoService, zap)
-	updatedToDoCmd := update_todo_command.New(todoService, zap)
-	makeToDoImportantCmd := make_todo_important_command.New(todoService, zap)
-	makeToDoNotImportantCmd := make_todo_not_important_command.New(todoService, zap)
+	createToDoCmd := create_todo_command.New(todoService, compositeLoggers)
+	deleteToDoCmd := delete_todo_command.New(todoService, compositeLoggers)
+	getToDoCmd := get_todo_command.New(todoService, compositeLoggers)
+	listToDoCmd := list_todos_command.New(todoService, compositeLoggers)
+	updatedToDoCmd := update_todo_command.New(todoService, compositeLoggers)
+	makeToDoImportantCmd := make_todo_important_command.New(todoService, compositeLoggers)
+	makeToDoNotImportantCmd := make_todo_not_important_command.New(todoService, compositeLoggers)
 	cliCommands := []cli.ICommand{
 		createToDoCmd,
 		deleteToDoCmd,

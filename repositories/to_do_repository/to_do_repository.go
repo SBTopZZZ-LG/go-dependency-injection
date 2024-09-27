@@ -6,8 +6,18 @@ import (
 	"todo_app/entities"
 )
 
+type ITODORepository interface {
+	Create(todoToCreate *entities.TODO) error
+	List() ([]*entities.TODO, error)
+	Get(id uint64) (*entities.TODO, error)
+	Update(todoToUpdate *entities.TODO) error
+	Delete(id uint64) error
+}
+
 type TODORepository struct {
 	gormDB *gorm.DB
+
+	ITODORepository
 }
 
 func New(gormDB *gorm.DB) *TODORepository {

@@ -5,17 +5,18 @@ import (
 	"github.com/spf13/cobra"
 	"go.uber.org/zap"
 	"todo_app/cli"
+	"todo_app/logger"
 	"todo_app/services/to_do_service"
 )
 
 type ListTODOsCommand struct {
-	todoService *to_do_service.TODOService
-	logger      *zap.Logger
+	todoService to_do_service.ITODOService
+	logger      logger.ILogger
 
 	cli.ICommand
 }
 
-func New(todoService *to_do_service.TODOService, logger *zap.Logger) *ListTODOsCommand {
+func New(todoService to_do_service.ITODOService, logger logger.ILogger) *ListTODOsCommand {
 	return &ListTODOsCommand{
 		todoService: todoService,
 		logger:      logger,
