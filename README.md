@@ -32,7 +32,7 @@ This repository has four branches, each highlighting different approaches to dep
 
 ## About the `with_dep_inv` Branch
 
-This branch represents our Go project setup enhanced with Dependency Inversion and Dependency Injection principles. It addresses the issues that we encountered in the [`without_dep_inv` branch](https://github.com/infraspec/go-todo-di/blob/without_dep_inv/README.md#whats-problematic-here) by decoupling high-level modules from low-level implementations.
+This branch represents our Go project setup enhanced with Dependency Inversion and Dependency Injection principles. It addresses the issues that we encountered in the [`without_dep_inv` branch](https://github.com/infraspecdev/go-todo-di/blob/without_dep_inv/README.md#whats-problematic-here) by decoupling high-level modules from low-level implementations.
 
 By implementing **Dependency Inversion** and **Dependency Injection**, the `with_dep_inv` branch streamlines the codebase, making it more modular and testable. High-level components no longer depend on concrete implementations but on abstractions, allowing for easier swapping of components and facilitating mock testing. This approach reduces tight coupling, enhances flexibility, and simplifies maintenance compared to the `without_dep_inv` branch, where components were tightly intertwined and difficult to manage.
 
@@ -40,7 +40,7 @@ By implementing **Dependency Inversion** and **Dependency Injection**, the `with
 
 While manual **Dependency Injection** improves the structure and decoupling of the codebase, managing numerous dependencies by hand can become complex and hard to maintain as the project grows. To keep the codebase simple, readable, and scalable, leveraging **Dependency Injection** libraries like **Uber fx** or **Google wire** can be highly beneficial. These libraries automate the wiring of dependencies, reduce boilerplate code, and handle the intricacies of dependency management efficiently.
 
-Explore the [`using_fx` branch](https://github.com/infraspec/go-todo-di/tree/using_fx) to see how **Uber fx** can streamline **Dependency Injection** in our project, or check out the [`using_wire` branch](https://github.com/infraspec/go-todo-di/tree/using_wire) to understand how **Google wire** facilitates efficient dependency management. These branches demonstrate the practical application of these libraries, enhancing the scalability and maintainability of the project.
+Explore the [`using_fx` branch](https://github.com/infraspecdev/go-todo-di/tree/using_fx) to see how **Uber fx** can streamline **Dependency Injection** in our project, or check out the [`using_wire` branch](https://github.com/infraspecdev/go-todo-di/tree/using_wire) to understand how **Google wire** facilitates efficient dependency management. These branches demonstrate the practical application of these libraries, enhancing the scalability and maintainability of the project.
 
 ## Getting Started
 
@@ -82,7 +82,7 @@ To run the Go Todo DI application, you'll need a MySQL database. Using Docker si
 1. **Clone the Repository**
 
    ```bash
-   git clone https://github.com/infraspec/go-todo-di.git
+   git clone https://github.com/infraspecdev/go-todo-di.git
    ```
 
 2. **Navigate to the Project Directory**
