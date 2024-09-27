@@ -50,7 +50,7 @@ Without **Dependency Inversion** and **Dependency Injection**, your codebase can
 
 ### Next Steps
 
-Ready to see improvements? Check out the [`with_dep_inv`](https://github.com/infraspec/go-todo-di/tree/with_dep_inv) branch to see how we tackle these issues by introducing Dependency Inversion. From there, you can explore `using_fx` and `using_wire` to see how different DI libraries can streamline your project.
+Ready to see improvements? Check out the [`with_dep_inv`](https://github.com/infraspecdev/go-todo-di/tree/with_dep_inv) branch to see how we tackle these issues by introducing Dependency Inversion. From there, you can explore `using_fx` and `using_wire` to see how different DI libraries can streamline your project.
 
 ## Getting Started
 
@@ -92,7 +92,7 @@ To run the Go Todo DI application, you'll need a MySQL database. Using Docker si
 1. **Clone the Repository**
 
    ```bash
-   git clone https://github.com/infraspec/go-todo-di.git
+   git clone https://github.com/infraspecdev/go-todo-di.git
    ```
 
 2. **Navigate to the Project Directory**
