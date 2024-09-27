@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/a631807682/zerofield"
 	"todo_app/config"
 	"todo_app/entities"
 )
@@ -14,6 +15,10 @@ func main() {
 
 	//TIP <h5>Create a GORM instance with the MySQL database connection</h5>
 	gormDB, closeConn, err := InitGormWithMySQLDriver(conf.DBConfig)
+	if err != nil {
+		panic(err)
+	}
+	err = gormDB.Use(zerofield.NewPlugin())
 	if err != nil {
 		panic(err)
 	}
