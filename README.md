@@ -34,7 +34,7 @@ This repository has four branches, each highlighting different approaches to dep
 
 ## About the `without_dep_inv` Branch
 
-This branch represents our initial Go project setup without proper dependency management. It’s a great starting point to understand the challenges before applying DI principles.
+This branch represents our initial Go project setup with basic dependency management.
 
 ### What's Problematic Here?
 
