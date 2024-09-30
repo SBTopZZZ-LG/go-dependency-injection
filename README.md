@@ -57,28 +57,34 @@ func main() {
 	
 	todoRepository := to_do_repository.New(gormDB)
 	todoService := to_do_service.New(todoRepository)
-
+	
 	zap, err := zap_util.NewZapLogger(conf.LoggerConfig)
 	// . . .
+	zapLogger := zap_logger.New(zap)
+	consoleLogger := console_logger.New(2)
+	compositeLoggers := loggers.New(
+		zapLogger,
+		consoleLogger,
+	)
 	
-	createToDoCmd := create_todo_command.New(todoService, zap)
-	deleteToDoCmd := delete_todo_command.New(todoService, zap)
-	getToDoCmd := get_todo_command.New(todoService, zap)
-	listToDoCmd := list_todos_command.New(todoService, zap)
-	updatedToDoCmd := update_todo_command.New(todoService, zap)
-	makeToDoImportantCmd := make_todo_important_command.New(todoService, zap)
-	makeToDoNotImportantCmd := make_todo_not_important_command.New(todoService, zap)
+	createToDoCmd := create_todo_command.New(todoService, compositeLoggers)
+	deleteToDoCmd := delete_todo_command.New(todoService, compositeLoggers)
+	getToDoCmd := get_todo_command.New(todoService, compositeLoggers)
+	listToDoCmd := list_todos_command.New(todoService, compositeLoggers)
+	updatedToDoCmd := update_todo_command.New(todoService, compositeLoggers)
+	makeToDoImportantCmd := make_todo_important_command.New(todoService, compositeLoggers)
+	makeToDoNotImportantCmd := make_todo_not_important_command.New(todoService, compositeLoggers)
 	cliCommands := []cli.ICommand{
-		createToDoCmd, 
+		createToDoCmd,
 		deleteToDoCmd,
-		getToDoCmd, 
-		listToDoCmd, 
+		getToDoCmd,
+		listToDoCmd,
 		updatedToDoCmd,
-		makeToDoImportantCmd, 
+		makeToDoImportantCmd,
 		makeToDoNotImportantCmd,
 	}
-	rootCmd := cli.NewRootCommand(cliCommands)
-
+	rootCmd := cli.NewRootCommand(cliCommands) 
+	
 	// . . .
 }
 ```
