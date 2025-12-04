@@ -121,7 +121,7 @@ To run the Go Todo DI application, you'll need a MySQL database. Using Docker si
 1. **Clone the Repository**
 
    ```bash
-   git clone https://github.com/infraspecdev/go-todo-di.git
+   git clone https://github.com/SBTopZZZ-LG/go-dependency-injection.git
    ```
 
 2. **Navigate to the Project Directory**
