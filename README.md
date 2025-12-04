@@ -184,7 +184,7 @@ Google Wire performs dependency injection at compile time, which allows for earl
 
 While **Google Wire** provides a compile-time, framework-free approach to **Dependency Injection**, it's essential to choose the right tool based on your project's needs:
 
-- **Explore the [`using_fx` branch](https://github.com/infraspecdev/go-todo-di/tree/using_fx)** to see how **Uber fx** offers a runtime framework with additional features like lifecycle management and built-in components.
+- **Explore the [`using_fx` branch](https://github.com/SBTopZZZ-LG/go-dependency-injection/tree/using_fx)** to see how **Uber fx** offers a runtime framework with additional features like lifecycle management and built-in components.
 - **Consider Your Project's Complexity:** For projects where runtime flexibility and advanced features are required, a framework like **Uber fx** might be more suitable.
 - **Evaluate Performance Needs:** If minimal runtime overhead and compile-time safety are priorities, **Google Wire** is an excellent choice.
 
@@ -228,7 +228,7 @@ To run the Go Todo DI application, you'll need a MySQL database. Using Docker si
 1. **Clone the Repository**
 
    ```bash
-   git clone https://github.com/infraspecdev/go-todo-di.git
+   git clone https://github.com/SBTopZZZ-LG/go-dependency-injection.git
    ```
 
 2. **Navigate to the Project Directory**
